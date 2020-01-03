@@ -1,26 +1,26 @@
 from __future__ import annotations
 
-from typing import Any
-import math
+from typing import Any, Hashable
 
 
 class Node:
     """A node of a linked list."""
 
-    def __init__(self, value: Any, prev_node: Node = None, next_node: Node = None):
+    def __init__(self, key: Hashable, value: Any, prev_node: Node = None, next_node: Node = None):
         """Class constructor."""
         self.value = value
+        self.key = key
         self.prev = prev_node
         self.next = next_node
 
     def __repr__(self):
-        return "Node[{value}]".format(value=self.value)
+        return "Node[{key}, {value}]".format(key=self.key, value=self.value)
 
 
 class DLinkedList:
     """Doubly Linked List."""
 
-    def __init__(self, capacity=math.inf):
+    def __init__(self, capacity):
         self._head = None
         self._tail = None
         self._len = 0
@@ -33,9 +33,14 @@ class DLinkedList:
         out = ""
         node = self._head
         while node:
-            out += "Node[{value}]->".format(value=node.value)
+            out += "Node[{key}, {value}]->".format(
+                key=node.key, value=node.value)
             node = node.next
         return out
+
+    @property
+    def tail(self):
+        return self._tail
 
     @property
     def head(self):
@@ -66,7 +71,12 @@ class DLinkedList:
         if node == self._head:
             return
 
-        node.prev.next, node.next.prev = node.next, node.prev
+        if node == self._tail:
+            self._tail = self._tail.prev
+
+        node.prev.next = node.next
+        if node.next:
+            node.next.prev = node.prev
         # Since we "extracted" the node from the list, we need to decrease the length of the list.
         self._len -= 1
         self.head = node
@@ -75,17 +85,31 @@ class DLinkedList:
 class LRUCache(object):
     def __init__(self, capacity):
         self._cache = dict()
-        self._priority_list = DLinkedList()
+        self._priority_list = DLinkedList(capacity)
+        self._capacity = capacity
+        self._len = 0
+
+    def __len__(self):
+        return self._len
+
+    def __repr__(self):
+        return self._cache.__repr__()
 
     def get(self, key):
-        # Retrieve item from provided key. Return -1 if nonexistent.
-        pass
+        if key not in self._cache:
+            return -1
+        self._priority_list.promote_to_head(self._cache[key])
+        return self._cache[key].value
 
     def set(self, key, value) -> None:
         if key not in self._cache:
-            node = Node(value)
-            self._priority_list.head = node
+            node = Node(key, value)
+            if len(self) + 1 > self._capacity:  # If the cache is full
+                del self._cache[self._priority_list.tail.key]
+                self._len -= 1
             self._cache[key] = node
+            self._priority_list.head = node
+            self._len += 1
         else:
             self._cache[key].value = value
             # Promote the node to the head.
@@ -93,8 +117,20 @@ class LRUCache(object):
 
 
 if __name__ == "__main__":
-    l = DLinkedList(capacity=3)
-    l.head = Node(10)
-    l.head = Node(20)
-    l.head = Node(30)
-    l.head = Node(40)
+    our_cache = LRUCache(5)
+    our_cache.set(1, 1)
+    our_cache.set(2, 2)
+    our_cache.set(3, 3)
+    our_cache.set(4, 4)
+
+    print(our_cache.get(1))       # returns 1
+    print(our_cache.get(2))       # returns 2
+
+    # returns -1 because 9 is not present in the cache
+    print(our_cache.get(9))
+
+    our_cache.set(5, 5)
+    our_cache.set(6, 6)
+
+    # returns -1 because the cache reached it's capacity and 3 was the least recently used entry
+    print(our_cache.get(3))
