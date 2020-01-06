@@ -6,30 +6,45 @@ from typing import Any, Hashable
 class Node:
     """A node of a linked list."""
 
-    def __init__(self, key: Hashable, value: Any, prev_node: Node = None, next_node: Node = None):
-        """Class constructor."""
+    def __init__(self, key: Hashable, value: Any, prev_node: Node = None, next_node: Node = None) -> None:
+        """Class constructor.
+
+        Args:
+            key: a key of a node.
+            value: a value of a node.
+            prev_node: previous node.
+            next_node: next node.
+        """
         self.value = value
         self.key = key
         self.prev = prev_node
         self.next = next_node
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """Represents a node as a string value."""
         return "Node[{key}, {value}]".format(key=self.key, value=self.value)
 
 
 class DLinkedList:
     """Doubly Linked List."""
 
-    def __init__(self, capacity):
+    def __init__(self, capacity: int) -> None:
+        """Class constructor.
+        
+        Args:
+            capacity: the maximum number of elements a list can store.
+        """
         self._head = None
         self._tail = None
         self._len = 0
         self._capacity = capacity
 
-    def __len__(self):
+    def __len__(self) -> int:
+        """Gets length of a list."""
         return self._len
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """Represents a list as a string value."""
         out = ""
         node = self._head
         while node:
@@ -39,22 +54,27 @@ class DLinkedList:
         return out
 
     @property
-    def tail(self):
+    def tail(self) -> Node:
         return self._tail
 
     @property
-    def head(self):
+    def head(self) -> Node:
         return self._head
 
     @head.setter
     def head(self, node: Node) -> None:
-        """Inserts a node into the head."""
+        """Inserts a node into a head.
+        
+        Args:
+            node: a new head node.
+        """
         # There are 3 options:
         #   1) The list is empty - directly assign the node to the head.
         if len(self) == 0:
             self._head, self._tail = node, node
             self._len += 1
-        #   2) The list is not empty and is not full - set a new element as the head, current head becomes next to the head.
+        #   2) The list is not empty and is not full - set a new element as the head, current 
+        #      head becomes next to the head.
         else:
             self._head.prev = node
             node.next = self._head
@@ -66,8 +86,12 @@ class DLinkedList:
             else:
                 self._len += 1
 
-    def promote_to_head(self, node) -> None:
-        """Promotes the node to the head."""
+    def promote_to_head(self, node: Node) -> None:
+        """Promotes the node to the head.
+        
+        Args:
+            node: a node to be promoted as a head.
+        """
         if node == self._head:
             return
 
@@ -83,25 +107,33 @@ class DLinkedList:
 
 
 class LRUCache(object):
-    def __init__(self, capacity):
+    def __init__(self, capacity) -> None:
+        """Class constructor.
+        
+        Args:
+            capacity: the maximum number of elements cache can store.
+        """
         self._cache = dict()
         self._priority_list = DLinkedList(capacity)
         self._capacity = capacity
         self._len = 0
 
-    def __len__(self):
+    def __len__(self) -> int:
+        """Gets length of cache."""
         return self._len
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """Represents cache as a string value."""
         return self._cache.__repr__()
 
-    def get(self, key):
+    def get(self, key: Hashable) -> Any:
         if key not in self._cache:
+            # It is not OK to return -1 in general, but it is fine in scope of this task.
             return -1
         self._priority_list.promote_to_head(self._cache[key])
         return self._cache[key].value
 
-    def set(self, key, value) -> None:
+    def set(self, key: Hashable, value: Any) -> None:
         if key not in self._cache:
             node = Node(key, value)
             if len(self) + 1 > self._capacity:  # If the cache is full
@@ -112,7 +144,6 @@ class LRUCache(object):
             self._len += 1
         else:
             self._cache[key].value = value
-            # Promote the node to the head.
             self._priority_list.promote_to_head(self._cache[key])
 
 
