@@ -25,7 +25,7 @@ class Node:
         return "Node[{key}, {value}]".format(key=self.key, value=self.value)
 
 
-class DLinkedList:
+class _DLinkedList:
     """Doubly Linked List."""
 
     def __init__(self, capacity: int) -> None:
@@ -79,7 +79,7 @@ class DLinkedList:
             self._head.prev = node
             node.next = self._head
             self._head = node
-        #   3) The list is full - cut the tail.
+            #   3) The list is full - cut the tail.
             if len(self) + 1 > self._capacity:
                 self._tail = self._tail.prev
                 self._tail.next = None
@@ -114,7 +114,9 @@ class LRUCache(object):
             capacity: the maximum number of elements cache can store.
         """
         self._cache = dict()
-        self._priority_list = DLinkedList(capacity)
+        if capacity <= 0:
+            raise ValueError("Capacity should be greater than 0. LRU cache holds at least 1 object.")
+        self._priority_list = _DLinkedList(capacity)
         self._capacity = capacity
         self._len = 0
 
@@ -154,8 +156,8 @@ if __name__ == "__main__":
     our_cache.set(3, 3)
     our_cache.set(4, 4)
 
-    print(our_cache.get(1))       # returns 1
-    print(our_cache.get(2))       # returns 2
+    print(our_cache.get(1))  # returns 1
+    print(our_cache.get(2))  # returns 2
 
     # returns -1 because 9 is not present in the cache
     print(our_cache.get(9))
