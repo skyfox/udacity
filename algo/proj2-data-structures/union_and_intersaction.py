@@ -13,7 +13,7 @@ class Node:
         self.value = value
         self.next = None
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Represents a node as a string."""
         return "Node[{value}]".format(value=self.value)
 
@@ -27,7 +27,7 @@ class LinkedList:
         self.values = set()
 
     def __repr__(self) -> str:
-        """Retpresents a list as a string."""
+        """Represents a list as a string."""
         cur_head = self.head
         out_string = ""
         while cur_head:

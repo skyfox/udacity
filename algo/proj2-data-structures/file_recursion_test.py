@@ -5,7 +5,7 @@ from .file_recursion import find_files
 
 
 class TestFilesFinder(unittest.TestCase):
-    def test_find_files(self):
+    def test_find_files(self) -> None:
         """Tests the usual behaviour of the find_files."""
         result = find_files(".c",
                             os.path.join(os.path.dirname(os.path.realpath(__file__)), "testdir"))
@@ -17,7 +17,7 @@ class TestFilesFinder(unittest.TestCase):
         ]
         self.assertCountEqual(expected_result, result)
 
-    def test_find_empty(self):
+    def test_find_empty(self) -> None:
         """Tests empty result return."""
         result = find_files(".bla",
                             os.path.join(os.path.dirname(os.path.realpath(__file__)), "testdir"))
