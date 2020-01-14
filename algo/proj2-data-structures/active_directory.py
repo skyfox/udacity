@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Text
 
 
-class Group(object):
+class Group:
     def __init__(self, name: Text) -> None:
         """Class constructor.
         
@@ -47,7 +47,7 @@ def is_user_in_group(user: str, group: Group) -> bool:
     for inner_group in group.groups:
         result = is_user_in_group(user, inner_group)
         if result:
-            break        
+            break
     return result
 
 
@@ -63,5 +63,5 @@ if __name__ == "__main__":
     child.add_group(sub_child_1)
     child.add_group(sub_child_2)
     parent.add_group(child)
-    print(is_user_in_group("sub_child_user", parent))
+    print(is_user_in_group("sub_child_user", child))
     print(is_user_in_group("sub_child_user2", parent))

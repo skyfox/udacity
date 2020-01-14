@@ -1,9 +1,10 @@
 import os
 import sys
 from collections import deque
+from typing import Text, List
 
 
-def find_files(suffix, path):
+def find_files(suffix: Text, path: Text) -> List[Text]:
     """
     Find all files beneath path with file name suffix.
 
@@ -13,8 +14,8 @@ def find_files(suffix, path):
     There are no limit to the depth of the subdirectories can be.
 
     Args:
-      suffix(str): suffix if the file name to be found
-      path(str): path of the file system
+      suffix: suffix if the file name to be found
+      path: path of the file system
 
     Returns:
        a list of paths
@@ -40,6 +41,6 @@ if __name__ == "__main__":
     except IndexError:
         sys.exit(
             "Initial directory and file suffix required. E.g. 'file_recursion.py cpp testdir'")
-    files = find_files(input_suffix, input_path)
-    for f in files:
+    found = find_files(input_suffix, input_path)
+    for f in found:
         print(f)
