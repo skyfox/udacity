@@ -18,6 +18,8 @@ class _Block:
             data: block's text.
             previous_block: the hash value of a previous block.
         """
+        if not data:
+            raise ValueError("Data can not be empty.")
         self.data = data
         self._previous_block = previous_block
         self._previous_hash = previous_block._hash if previous_block else None
@@ -81,7 +83,7 @@ class Blockchain:
         out = "void"
         block = self._tail
         while block:
-            out = out + " <- " + self._tail.__repr__()
+            out = out + " <- " + block.__repr__()
             block = block.previous_block
         return out
 

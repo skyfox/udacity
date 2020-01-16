@@ -102,6 +102,10 @@ class TestLRUCache(unittest.TestCase):
         with self.assertRaises(ValueError):
             LRUCache(0)
 
+    def test_update_value(self):
+        self.lru_cache.set(4, 42)
+        self.assertEqual(42, self.lru_cache.get(4))
+
 
 if __name__ == '__main__':
     unittest.main()

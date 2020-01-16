@@ -26,6 +26,20 @@ class TestUserInGroup(unittest.TestCase):
         """Tests that the user is not in a group"""
         self.assertFalse(is_user_in_group("not_a_user", self.child))
 
+    def test_no_args(self) -> None:
+        """Tests the case with default args."""
+        with self.assertRaises(TypeError):
+            self.assertFalse(is_user_in_group())
+
+    def test_no_group(self) -> None:
+        """Tests the case when a group instance is not provided."""
+        with self.assertRaises(TypeError):
+            self.assertFalse(is_user_in_group("user"))
+
+    def test_not_group(self) -> None:
+        """Tests the case when a group is not an instance of Group class."""
+        with self.assertRaises(TypeError):
+            self.assertFalse(is_user_in_group("user", "group"))
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,12 +1,7 @@
 import unittest
 from typing import Text, Dict
 
-from .huffman_coding import huffman_encode, huffman_decode
-
-
-def _encode_string(string: Text, code: Dict) -> str:
-    """Encodes the string."""
-    return "".join(code[ch] for ch in string)
+from .huffman_coding import huffman_encode, huffman_decode, encode_string
 
 
 class TestHuffmanEncode(unittest.TestCase):
@@ -22,6 +17,12 @@ class TestHuffmanEncode(unittest.TestCase):
         expected_result = {"a": "0"}
         self.assertDictEqual(expected_result, result)
 
+    def test_encode_same_char(self) -> None:
+        """Tests same char line encoding."""
+        s = "aaaaaaaa"
+        result = encode_string(s, huffman_encode(s))
+        self.assertEqual("00000000", result)
+
     def test_encode_str(self) -> None:
         """Tests full line encoding."""
         s = "aaaabbbccd"
@@ -35,14 +36,14 @@ class TestHuffmanDecode(unittest.TestCase):
         """Checks 1-char line decoding."""
         s = "0"
         codemap = huffman_encode(s)
-        bin_str = _encode_string(s, codemap)
+        bin_str = encode_string(s, codemap)
         self.assertEqual(s, huffman_decode(bin_str, codemap))
 
     def test_decode_str(self) -> None:
         """Checks full line decoding."""
         s = "aaaabbbccd"
         codemap = huffman_encode(s)
-        bin_str = _encode_string(s, codemap)
+        bin_str = encode_string(s, codemap)
         self.assertEqual(s, huffman_decode(bin_str, codemap))
 
 

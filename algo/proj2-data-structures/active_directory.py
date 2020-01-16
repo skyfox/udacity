@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Text
+from typing import Text, Optional
 
 
 class Group:
@@ -31,7 +31,7 @@ class Group:
         self.users.add(user)
 
 
-def is_user_in_group(user: str, group: Group) -> bool:
+def is_user_in_group(user: Optional[str] = None, group: Optional[Group] = None) -> bool:
     """Checks is a user in a group.
 
     Args:
@@ -41,6 +41,13 @@ def is_user_in_group(user: str, group: Group) -> bool:
     Returns:
         True if user is in the group, False otherwise.
     """
+    if not user:
+        raise TypeError("User arg should be specified.")
+    if not group:
+        raise TypeError("Group arg should be specified.")
+
+    if not isinstance(group, Group):
+        raise TypeError("group has to be an instance from Group class.")
     result = False
     if user in group.users:
         return True

@@ -20,6 +20,10 @@ def find_files(suffix: Text, path: Text) -> List[Text]:
     Returns:
        a list of paths
     """
+    # The case when a file instead of a directory was provided as a path.
+    if os.path.isfile(path):
+        return [path] if path.endswith(suffix) else []
+
     files = []
     q = deque([path])
     while len(q):

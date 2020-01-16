@@ -26,6 +26,37 @@ class TestLinkedList(unittest.TestCase):
         l_union = l2.union(l1)
         self.assertEqual({1, 2, 3, 4}, l_union.values)
 
+    def test_union_other_empty(self) -> None:
+        """Tests the case when one of the lists is empty."""
+        l1 = LinkedList()
+        l1.append(1)
+        l1.append(2)
+        l2 = LinkedList()
+        l_union = l2.union(l1)
+        self.assertEqual({1, 2}, l_union.values)
+
+    def test_union_both_empty(self):
+        """Tests union when both lists are empty."""
+        l1 = LinkedList()
+        l2 = LinkedList()
+        l_union = l2.union(l1)
+        self.assertEqual(set(), l_union.values)
+
+    def test_intersection_one_empty(self):
+        """Tests intersection when one of the lists is empty."""
+        l1 = LinkedList()
+        l1.append(1)
+        l2 = LinkedList()
+        l_union = l2.intersection(l1)
+        self.assertEqual(set(), l_union.values)
+
+    def test_intersection_both_empty(self):
+        """Tests intersection when one of the lists is empty."""
+        l1 = LinkedList()
+        l2 = LinkedList()
+        l_union = l2.intersection(l1)
+        self.assertEqual(set(), l_union.values)
+
     def test_empty_intersection(self) -> None:
         """Tests the intersection where the result is empty."""
         l1 = LinkedList()

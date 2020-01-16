@@ -19,6 +19,11 @@ class TestBlock(unittest.TestCase):
         expected_result = hashlib.sha256("Test data".encode('utf-8')).hexdigest()
         self.assertEqual(expected_result, next_block.prev_hash)
 
+    def test_empty_data(self) -> None:
+        """Tests the case when data is not provided."""
+        with self.assertRaises(ValueError):
+            _Block("")
+
 
 class TestBlockchain(unittest.TestCase):
     def test_empty_chain(self) -> None:

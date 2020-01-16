@@ -73,6 +73,11 @@ def huffman_encode(string: Text) -> Dict:
     return code
 
 
+def encode_string(string: Text, code: Dict) -> str:
+    """Encodes the string."""
+    return "".join(code[ch] for ch in string)
+
+
 def huffman_decode(encode: Text, codemap: Dict) -> Text:
     """Decodes encoded string based on provided codemap dict.
 
@@ -100,6 +105,4 @@ def huffman_decode(encode: Text, codemap: Dict) -> Text:
 if __name__ == "__main__":
     s = "aaaabbbccd"
     code = huffman_encode(s)
-    print(code)
-    encode = "".join(code[ch] for ch in s)
-    print(encode)
+    print(encode_string(s, code))

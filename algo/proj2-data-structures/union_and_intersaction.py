@@ -61,8 +61,13 @@ class LinkedList:
         Return:
             the union of 2 linked lists.
         """
+        union_values = {val for val in other.values}
+        for value in self.values:
+            if value not in union_values:
+                union_values.add(value)
+
         union = LinkedList()
-        for value in self.values.union(other.values):
+        for value in union_values:
             union.append(value)
         return union
 
@@ -76,8 +81,9 @@ class LinkedList:
             the intersaction of 2 linked lists.
         """
         intersection = LinkedList()
-        for value in self.values.intersection(other.values):
-            intersection.append(value)
+        for value in self.values:
+            if value in other.values:
+                intersection.append(value)
         return intersection
 
 
