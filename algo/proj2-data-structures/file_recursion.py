@@ -34,7 +34,7 @@ def find_files(suffix: Text, path: Text) -> List[Text]:
                 files.append(obj_path)
             if os.path.isdir(obj_path):
                 q.appendleft(obj_path)
-    return sorted(files)
+    return files
 
 
 if __name__ == "__main__":

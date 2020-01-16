@@ -23,7 +23,7 @@ object values are unique.
 ## File Recursion
 
 File recursion task is a classical recursive tree traversal problem with filtering nodes by a specific
-condition. Very often it is very easy and straightforward to replace recursion with a queue. It this 
+condition. Very often it is very easy and straightforward to replace recursion with a queue. In this 
 case there is no chance to reach the max recursion depth and the implementation will work even for 
 hugh number over folded files and directories. The only limit is a memory for paths and found files. 
 The tree can be assumed such that the files act as the leaf nodes and the directories act as the

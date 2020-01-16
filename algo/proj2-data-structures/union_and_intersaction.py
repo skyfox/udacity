@@ -63,8 +63,7 @@ class LinkedList:
         """
         union_values = {val for val in other.values}
         for value in self.values:
-            if value not in union_values:
-                union_values.add(value)
+            union_values.add(value)
 
         union = LinkedList()
         for value in union_values:
