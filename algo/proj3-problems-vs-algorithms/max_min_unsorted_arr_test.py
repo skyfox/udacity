@@ -7,7 +7,7 @@ from .max_min_unsorted_arr import get_min_max
 class TestGetMaxMin(unittest.TestCase):
     def test_empty_input(self):
         """Tests empty array as input."""
-        min_num, max_num =  get_min_max([])
+        min_num, max_num = get_min_max([])
         self.assertEqual(float("inf"), min_num)
         self.assertEqual(float("-inf"), max_num)
 
