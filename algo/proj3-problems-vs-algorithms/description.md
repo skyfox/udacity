@@ -17,6 +17,24 @@ Time complexity: O(n). collections.Counter will take linear time to count 0's, 1
 will take same linear time.  
 Space complexity: O(n). After the loop auxiliary list (sorted_arr) will have the same length as input list. 
 
+## Autocomplete with Tries
+
+Different functions of trie-based autocomplete have different complexity.
+
+Insert time complexity: O(n), where n - is a length of a 'word'.  
+Insert memory complexity: O(n). In worst case every word we try to insert consists of unique sequences of chars, for
+example 'aaa', 'bbbb', 'cc'. Worst case memory-n is a sum of lengths of inserted words.
+
+Get suffixes time complexity: O(n), where n is a number of nodes in a trie. In worst case a suffix is an empty string.
+In this case we need to visit all n nodes of the trie.  
+Memory complexity: O(n), where n is all words stored in a trie. In worst case we will return all words built on the way
+to nodes with is_word=True attribute.
+
+It might sounds like a slow algorithm, but we see it in action in our mobile devices since forever. The secret is that
+the number of words in a language is limited. 300,000-450,000 words for English. People actively use 20,000-50,000.
+Actively used words very often have similar prefixes. Hence the time and memory complexity in real-world scenario is
+very-very limited and even very low-cost phones can do it very fast.
+
 ## Max and Min in a Unsorted Array
 
 Note: I use -∞ and +∞ to compare with. In a case of empty input default (-∞, +∞) will be returned. 
