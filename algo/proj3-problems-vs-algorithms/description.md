@@ -2,6 +2,13 @@
 
 There is no broken or not passing test. Every test for every problem passes.
 
+## Finding the Square Root of an Integer
+
+The algorithm is a modification of binary search.  
+Time complexity: O(nlogn). There is just a small difference when the value will be returned in comparison to classical
+binary search.  
+Space complexity: O(1). There is no non-auxiliary structures to store in the implementation. 
+
 ## Dutch National Flag Problem
 
 Typical sorting algorithms (merge sort, quick sort, etc.) rely on the comparison between 2 elements. If a class of
