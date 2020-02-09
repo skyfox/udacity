@@ -9,6 +9,14 @@ Time complexity: O(nlogn). There is just a small difference when the value will 
 binary search.  
 Space complexity: O(1). There is no non-auxiliary structures to store in the implementation. 
 
+## Search in a Rotated Sorted Array
+
+The algorithm is a modification of binary search. It includes 2 slightly different implementations of binary search.  
+Time complexity: O(logn). We run 2 different modification of binary search twice. Each of them has O(logn) time 
+complexity. Hence overall algorithm has O(logn) complexity.  
+Space complexity: O(1). There is no non-auxiliary structures to store in the implementation.
+
+
 ## Dutch National Flag Problem
 
 Typical sorting algorithms (merge sort, quick sort, etc.) rely on the comparison between 2 elements. If a class of
