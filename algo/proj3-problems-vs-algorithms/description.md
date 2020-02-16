@@ -16,7 +16,20 @@ Time complexity: O(logn). We run 2 different modification of binary search twice
 complexity. Hence overall algorithm has O(logn) complexity.  
 Space complexity: O(1). There is no non-auxiliary structures to store in the implementation.
 
+## Rearrange Array Elements
 
+To sort an input array, I used iterative, queue-based implementation of merge sort. I do not recursively split the
+list. Instead I add every element to the queue and "consume" the queue until it has only 1 element. merge() happens
+in linear time - (O(n)). I need to merge log(n) times. Hence time complexity of the merge sort is O(nlog(n)).  
+On the final merge first and second lists consume O(n) memory. Before the return from merge() function it consumes O(n) 
+memory. Hence space complexity is O(n).
+Converting str -> int and int -> str takes linear time. However I can assume that all array elements are in the 
+range \[0, 9\]. Hence time complexity of finding 2 numbers is O(n) - we need to iterate over sorted array once and
+accumulate the result. The same linear time needed to convert str -> int.
+
+Overall time complexity: O(nlog(n)).  
+Overall space complexity: O(n).
+ 
 ## Dutch National Flag Problem
 
 Typical sorting algorithms (merge sort, quick sort, etc.) rely on the comparison between 2 elements. If a class of
