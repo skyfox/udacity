@@ -2,21 +2,21 @@
 
 There is no broken or not passing test. Every test for every problem passes.
 
-## Finding the Square Root of an Integer
+## 1. Finding the Square Root of an Integer
 
 The algorithm is a modification of binary search.  
 Time complexity: O(nlogn). There is just a small difference when the value will be returned in comparison to classical
 binary search.  
 Space complexity: O(1). There is no non-auxiliary structures to store in the implementation. 
 
-## Search in a Rotated Sorted Array
+## 2. Search in a Rotated Sorted Array
 
 The algorithm is a modification of binary search. It includes 2 slightly different implementations of binary search.  
 Time complexity: O(logn). We run 2 different modification of binary search twice. Each of them has O(logn) time 
 complexity. Hence overall algorithm has O(logn) complexity.  
 Space complexity: O(1). There is no non-auxiliary structures to store in the implementation.
 
-## Rearrange Array Elements
+## 3. Rearrange Array Elements
 
 To sort an input array, I used iterative, queue-based implementation of merge sort. I do not recursively split the
 list. Instead I add every element to the queue and "consume" the queue until it has only 1 element. merge() happens
@@ -30,7 +30,7 @@ accumulate the result. The same linear time needed to convert str -> int.
 Overall time complexity: O(nlog(n)).  
 Overall space complexity: O(n).
  
-## Dutch National Flag Problem
+## 4. Dutch National Flag Problem
 
 Typical sorting algorithms (merge sort, quick sort, etc.) rely on the comparison between 2 elements. If a class of
 objects implements "equality" and "greater than" (or their opposites) comparison functions, it is sufficient to use 
@@ -45,7 +45,7 @@ Time complexity: O(n). collections.Counter will take linear time to count 0's, 1
 will take same linear time.  
 Space complexity: O(n). After the loop auxiliary list (sorted_arr) will have the same length as input list. 
 
-## Autocomplete with Tries
+## 5. Autocomplete with Tries
 
 Different functions of trie-based autocomplete have different complexity.
 
@@ -63,9 +63,27 @@ the number of words in a language is limited. 300,000-450,000 words for English.
 Actively used words very often have similar prefixes. Hence the time and memory complexity in real-world scenario is
 very-very limited and even very low-cost phones can do it very fast.
 
-## Max and Min in a Unsorted Array
+## 6. Max and Min in a Unsorted Array
 
 Note: I use -∞ and +∞ to compare with. In a case of empty input default (-∞, +∞) will be returned. 
 
 Time complexity: O(n). I iterate over an input array only once.  
 Space complexity: O(1). There are only auxiliary elements in the function.
+
+
+## 7. HTTPRouter using a Trie
+
+Router uses typical implementation of a prefix tree. It has 2 key methods: 
+
+* add_handler
+* lookup
+
+Methods does not add a lot of logic on top of trie's methods. Hence the time and space complexity of 
+trie's insert/find is the same as router's add_handler/lookup.  
+In worst-case scenario the trie will have a form of a linked list. Hence:
+
+time complexity: O(n)  
+space complexity: O(n)
+
+where __n__ is a number of unique path components. E.g. for "/path/to/page" there are 3 components: "path", "to", 
+and "page". 
