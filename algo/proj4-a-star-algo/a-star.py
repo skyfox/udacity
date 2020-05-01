@@ -49,61 +49,81 @@ def road_lengths(map_):
 
 
 class Node:
-    def __init__(self, id_, x, y, len_to_start=float("inf"), prev=None):
+    """Node represents a 'rich' intersection.
+
+    It is intersection in core, but with additional properties. It makes an intersection closer to graph theory.
+    """
+
+    def __init__(self, id_, x, y, distance_to_goal=float("inf"), way_to_start=float("inf")):
         self.id = id_
         self.x = x
         self.y = y
-        self.prev = prev
-        self.len_to_start = len_to_start
+        self.distance_to_goal = distance_to_goal
+        self.way_from_start = way_to_start
 
     def __repr__(self):
-        return "Node_{id_}[({x_coord}, {y_coord}), previous={prev}]".format(
-            id_=self.id, x_coord=self.x, y_coord=self.y, prev=self.prev)
+        """Represents the node as a string.
+
+        Very useful and convenient for debugging.
+        """
+        return "Node_{id_}[({x_coord}, {y_coord}), from_start={way_to_start}, to_goal={dist_to_goal}]".format(
+            id_=self.id, x_coord=self.x, y_coord=self.y, way_to_start=self.way_from_start,
+            dist_to_goal=self.distance_to_goal)
 
     def __lt__(self, other):
-        return self.len_to_start < other.len_to_start
+        """Estimates which node is 'heavier'.
+
+        This is very useful for priority queue, because it implements comparison interface. Hence heapq can properly
+        store nodes.
+        """
+        return (self.way_from_start + self.distance_to_goal) < (other.way_from_start + other.distance_to_goal)
 
 
 class Graph:
+    """Graph representation of a given map abstraction.
+
+    Similar to Node class this one adds a few useful auxiliary elements to represent Map as a graph from graph theory.
+    """
     def __init__(self, map_):
         self._roads = map_.roads
         self._roads_len = road_lengths(map_)
         self._intersections = map_.intersections
+
+        # Create nodes
         self.nodes = {}
         for intersection_id in map_.intersections:
             x, y = map_.intersections[intersection_id]
             self.nodes[intersection_id] = Node(intersection_id, x, y)
 
     def find_path(self, start, goal):
-        dists_to_goal = distances_to_goal(self._intersections, goal)
-        self.nodes[start].len_to_start = dists_to_goal[start]
-        visited = set()
-        h = [self.nodes[start]]  # min-heap stores the sequence of nodes traverse.
-        while h:
-            node = heapq.heappop(h)
-            # The destination node is reached.
-            if node.id == goal:
-                break
-            # Skip if already visited.
-            if node.id in visited:
-                continue
-            # Add neighbours to the heap.
-            for neighbours_node_id in self._roads[node.id]:
-                dist_to_start = node.len_to_start + self._roads_len[(node.id, neighbours_node_id)] + dists_to_goal[
-                    neighbours_node_id]
-                if dist_to_start < self.nodes[neighbours_node_id].len_to_start:
-                    self.nodes[neighbours_node_id].len_to_start = dist_to_start
-                    self.nodes[neighbours_node_id].prev = node.id
-                heapq.heappush(h, self.nodes[neighbours_node_id])
-            visited.add(node.id)
+        # Add distances to goal for each Node
+        distances = distances_to_goal(self._intersections, goal)
+        for node_id in distances:
+            self.nodes[node_id].distance_to_goal = distances[node_id]
 
-        # Backtracking.
-        node = self.nodes[goal]
+        self.nodes[start].way_from_start = 0  # Start node has 0-th way to itself.
+        pq = []  # Create a min-heap to store the traverse priority.
+        heapq.heappush(pq, self.nodes[start])
+        visited = {start}
+        path_tracker = {start: None}  # Stores the order of traverse.
+
+        while pq:
+            node = heapq.heappop(pq)
+            for neighb_node_id in self._roads[node.id]:
+                neighb_way_from_start = node.way_from_start + self._roads_len[(node.id, neighb_node_id)]
+                if neighb_node_id not in visited or neighb_way_from_start < self.nodes[neighb_node_id].way_from_start:
+                    heapq.heappush(pq, self.nodes[neighb_node_id])
+                    self.nodes[neighb_node_id].way_from_start = neighb_way_from_start
+                    visited.add(neighb_node_id)
+                    path_tracker[neighb_node_id] = node.id
+
+        # Restore the path from start to goal.
         path = []
-        while node:
-            path.append(node.id)
-            node = self.nodes[node.prev] if node.prev else None
-        return path
+        key = goal
+        while key:
+            path.append(key)
+            key = path_tracker[key]
+        return path[::-1]
 
 
 def shortest_path(map_, start, goal):
